@@ -27,7 +27,7 @@ fi
 
 echo "Buscando a versão atual no  ${POM_FILE}."
 
-VERSION=$(awk '/<project/,/<\/project>/' "${POM_FILE}" | grep -m1 -oP '(?<=<version>)[^<]+')
+VERSION=$(awk '/<parent>/,/<\/parent>/ {next} /<version>/{print; exit}' "${POM_FILE}" | grep -oP '(?<=<version>)[^<]+')
 
 if [ -z "$VERSION" ]; then
   echo "ERRO: Não foi possível extrair a versão do  ${POM_FILE}."
